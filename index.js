@@ -27,7 +27,7 @@ async function updateRecentRelease() {
     let res = await fetch("recent-release.json");
     if (!res.ok) {
       // fallback for public/ fetch (e.g., if deployed with public dir)
-      res = await fetch("public/recent-release.json");
+      res = await fetch("/public/recent-release.json");
     }
     if (!res.ok) throw new Error("No recent release data found.");
     const data = await res.json();
