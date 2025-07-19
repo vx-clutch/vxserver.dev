@@ -18,6 +18,18 @@ body {
   flex-direction: column;
 }
 
+body,
+p,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 2;
+}
+
 .banner {
   background: #23255a;
   color: #ffe066;
@@ -53,8 +65,12 @@ body {
   color: #23255a;
 }
 
+.main.container {
+  min-height: 0;
+}
+
 main.container {
-  flex: 1 0 auto;
+  flex: 1 1 0%;
   display: flex;
   width: 100%;
   box-sizing: border-box;
