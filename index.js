@@ -22,10 +22,16 @@ async function updateRecentRelease() {
   if (!recentReleaseElem) return;
   recentReleaseElem.textContent = "Loading…";
 
+  // Use CORS proxy for local dev
+  const corsProxy = location.hostname === "localhost" || location.hostname === "127.0.0.1"
+    ? "https://corsproxy.io/?"
+    : "";
+
   try {
-    // Fetch all public repos
-    const reposRes = await fetch(`https://api.github.com/users/${user}/repos?per_page=100`);
-    const repos = await reposRes.json();
+    // Fetch all public repos, exclude forks
+    const reposRes = await fetch(`${corsProxy}https://api.github.com/users/${user}/repos?per_page=100`);
+    let repos = await reposRes.json();
+    repos = repos.filter(repo => !repo.fork); // Exclude forks
 
     if (!Array.isArray(repos) || repos.length === 0) {
       recentReleaseElem.textContent = "No repositories found.";
@@ -34,7 +40,7 @@ async function updateRecentRelease() {
 
     // For each repo, fetch the latest commit
     const repoCommits = await Promise.all(repos.map(async repo => {
-      const commitsRes = await fetch(`https://api.github.com/repos/${user}/${repo.name}/commits?per_page=1`);
+      const commitsRes = await fetch(`${corsProxy}https://api.github.com/repos/${user}/${repo.name}/commits?per_page=1`);
       const commits = await commitsRes.json();
       const latestCommit = Array.isArray(commits) && commits.length > 0 ? commits[0] : null;
       return {
