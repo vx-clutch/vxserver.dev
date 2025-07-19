@@ -16,15 +16,22 @@ jobs:
         run: |
           curl -s -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/users/vx-clutch/repos?per_page=100" \
-            | jq '[.[] | select(.fork==false)] | map({name: .name, url: .html_url})' > repos.json
+            "https://api.github.com/users/vx-clutch/repos?per_page=100" > repos_raw.json
+
+          # Check if the response is an array
+          if jq -e 'type == "array"' repos_raw.json > /dev/null; then
+            jq '[.[] | select(.fork==false)] | map({name: .name, url: .html_url})' repos_raw.json > repos.json
+          else
+            echo '{"error":"GitHub API did not return an array. Check token/permissions/rate limits."}' > recent-release.json
+            exit 0
+          fi
 
           jq -c '.[]' repos.json | while read repo; do
             name=$(echo $repo | jq -r '.name')
             url=$(echo $repo | jq -r '.url')
             commit=$(curl -s -H "Accept: application/vnd.github+json" \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-              "https://api.github.com/repos/vx-clutch/$name/commits?per_page=1" | jq '.[0]')
+              "https://api.github.com/repos/vx-clutch/$name/commits?per_page=1" | jq 'if type=="array" then .[0] else empty end')
             if [ "$commit" != "null" ]; then
               date=$(echo $commit | jq -r '.commit.author.date')
               commit_url=$(echo $commit | jq -r '.html_url')
