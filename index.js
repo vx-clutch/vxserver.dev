@@ -29,7 +29,7 @@ async function updateRecentRelease() {
 
   try {
     // Use absolute path for GitHub Pages project site
-    let res = await fetch("/vxserver.dev/public/recent-release.json");
+    let res = await fetch("public/recent-release.json");
     if (!res.ok) {
       setError("No recent release data found.");
       return;
