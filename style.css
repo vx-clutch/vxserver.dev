@@ -1,19 +1,32 @@
+html,
 body {
-  background-color: #0f0f0f;
-  color: #eee;
+  height: 100%;
+}
+
+body {
+  background-color: #181a20;
+  color: #e5e7ef;
   font-family: sans-serif;
   margin: 0;
+  max-width: 75em;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+  padding: 0 1em;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .banner {
-  background: #330099;
-  color: orange;
+  background: #23255a;
+  color: #ffe066;
   text-align: center;
   padding: 1rem;
 }
 
 .top-nav {
-  background: #8a1c1c;
+  background: #23263a;
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 1rem;
@@ -25,33 +38,90 @@ body {
   list-style: none;
 }
 
-.container {
+.top-nav a {
+  color: #ffe066;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 0.25em 0.75em;
+  border-radius: 3px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.top-nav a:hover,
+.top-nav a:focus {
+  background: #ffe066;
+  color: #23255a;
+}
+
+main.container {
+  flex: 1 0 auto;
   display: flex;
-  max-width: 1200px;
-  margin: auto;
-  padding: 2rem;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 .left-column {
   flex: 3;
   padding-right: 1rem;
+  margin-left: 2rem;
 }
 
 .right-sidebar {
   flex: 1;
   padding-left: 1rem;
+  margin-top: 2.5rem;
 }
 
 .right-sidebar .box {
-  background: #1e1e1e;
+  background: #23263a;
   padding: 1rem;
   margin-bottom: 1rem;
-  border: 1px solid #444;
+  border: 1px solid #35384a;
+  border-radius: 6px;
+  color: #e5e7ef;
 }
 
 footer {
-  background: #222;
-  color: #aaa;
+  background: #0c0d0f;
+  color: #bfc4d1;
   text-align: center;
   padding: 1rem;
+  flex-shrink: 0;
+}
+
+a {
+  color: #7ea2ff;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+a:hover,
+a:focus {
+  color: #ffe066;
+}
+
+.vx-software-list {
+  columns: 3 180px;
+  -webkit-columns: 3 180px;
+  -moz-columns: 3 180px;
+  font-size: 0.98em;
+  line-height: 1.7;
+  margin: 1.5em 0;
+  padding: 0;
+}
+
+.vx-software-list a {
+  display: inline-block;
+  margin: 0 0.5em 0.1em 0;
+  color: #7ea2ff;
+  text-decoration: underline;
+  font-weight: normal;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+
+.vx-software-list a:hover,
+.vx-software-list a:focus {
+  color: #ffe066;
 }
