@@ -28,8 +28,8 @@ async function updateRecentRelease() {
   };
 
   try {
-    // Always fetch from /public/recent-release.json (absolute path)
-    let res = await fetch("/public/recent-release.json");
+    // Use relative path for GitHub Pages project site
+    let res = await fetch("public/recent-release.json");
     if (!res.ok) {
       setError("No recent release data found.");
       return;
