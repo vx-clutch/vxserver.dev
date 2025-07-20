@@ -12,7 +12,6 @@ body {
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
-  padding: 0 1em;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -41,6 +40,8 @@ h6 {
   background: #23263a;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  /* Add this line to vertically center children */
   padding: 0.5rem 1rem;
 }
 
@@ -74,7 +75,7 @@ main.container {
   display: flex;
   width: 100%;
   box-sizing: border-box;
-  padding: 0;
+  padding: 0 1em;
 }
 
 .left-column {
@@ -102,8 +103,9 @@ footer {
   background: #0c0d0f;
   color: #bfc4d1;
   text-align: center;
-  padding: 1rem;
+  padding: 1em;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 a {
@@ -149,3 +151,21 @@ a:focus {
   color: #ffe066;
   background: #23255a;
 }
+
+/* .logo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0.25em 0.75em;
+  border-radius: 3px;
+  font-weight: bold;
+  color: #ffe066;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+
+.logo:hover,
+.logo:focus {
+  background: #ffe066;
+  color: #23255a;
+} */

@@ -1,6 +1,10 @@
-const programs = [
-  "yait",
-];
+async function getPrograms() {
+  const res = await fetch('https://api.github.com/users/vx-clutch/repos?per_page=100');
+  if (!res.ok) return ["yait", "dotfiles", "vxserver.dev"];
+  const repos = await res.json();
+  if (!Array.isArray(repos)) return ["yait", "dotfiles", "vxserver.dev"];
+  return repos.map(repo => repo.name);
+}
 
 function getProgramOfTheDay(arr) {
   const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
@@ -11,10 +15,15 @@ function getProgramOfTheDay(arr) {
   return arr[hash];
 }
 
-const programOfTheDay = getProgramOfTheDay(programs);
-const potd = document.getElementById("potd")
-potd.textContent = programOfTheDay;
-potd.href = `https://github.com/vx-clutch/${programOfTheDay}`
+async function setProgramOfTheDay() {
+  const programs = await getPrograms();
+  const programOfTheDay = getProgramOfTheDay(programs);
+  const potd = document.getElementById("potd");
+  potd.textContent = programOfTheDay;
+  potd.href = `https://github.com/vx-clutch/${programOfTheDay}`;
+}
+
+setProgramOfTheDay();
 
 async function updateRecentRelease() {
   const recentReleaseElem = document.getElementById("recent-release");
