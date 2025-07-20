@@ -1,6 +1,12 @@
 name: Update Recent Release
 
 on:
+  push:
+    paths-ignore:
+      - '**'
+  pull_request:
+    paths-ignore:
+      - '**'
   schedule:
     - cron: '0 * * * *' # every hour
   workflow_dispatch:

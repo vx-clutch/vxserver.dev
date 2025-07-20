@@ -118,9 +118,9 @@ a:focus {
 }
 
 .vx-software-list {
-  columns: 3 180px;
-  -webkit-columns: 3 180px;
-  -moz-columns: 3 180px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1em;
   font-size: 0.98em;
   line-height: 1.7;
   margin: 1.5em 0;
@@ -128,16 +128,24 @@ a:focus {
 }
 
 .vx-software-list a {
-  display: inline-block;
-  margin: 0 0.5em 0.1em 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 24px;
+  border: none;
+  border-radius: 0;
+  margin: 0;
   color: #7ea2ff;
   text-decoration: underline;
   font-weight: normal;
   white-space: nowrap;
-  transition: color 0.2s;
+  transition: color 0.2s, background 0.2s;
+  padding: 0.5em 0.75em;
+  text-align: left;
 }
 
 .vx-software-list a:hover,
 .vx-software-list a:focus {
   color: #ffe066;
+  background: #23255a;
 }

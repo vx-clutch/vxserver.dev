@@ -30,11 +30,8 @@
             <div class="content">
                 <div class="box vx-projects-box">
                     <h3>All VX Software Projects</h3>
-                    <div class="vx-software-list">
-                        <a href="https://github.com/vx-clutch/yait" target="_blank" rel="noopener">yait</a>
-                        <a href="https://github.com/vx-clutch/dotfiles" target="_blank" rel="noopener">dotfiles</a>
-                        <a href="https://github.com/vx-clutch/vxserver.dev" target="_blank"
-                            rel="noopener">vxserver.dev</a>
+                    <div class="vx-software-list" id="vx-software-list">
+                        <!-- Repos will be loaded here -->
                     </div>
                 </div>
             </div>
@@ -64,6 +61,38 @@
             </div>
         </aside>
         <script src="index.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const repoList = document.getElementById('vx-software-list');
+                repoList.innerHTML = 'Loading…';
+
+                fetch('https://api.github.com/users/vx-clutch/repos?per_page=100')
+                    .then(response => response.json())
+                    .then(repos => {
+                        console.log('GitHub API response:', repos); // Debug log
+                        if (!Array.isArray(repos)) {
+                            repoList.innerHTML = 'Failed to load repositories.';
+                            return;
+                        }
+                        repoList.innerHTML = '';
+                        repos.forEach(repo => {
+                            const a = document.createElement('a');
+                            a.href = repo.html_url;
+                            a.target = '_blank';
+                            a.rel = 'noopener';
+                            a.textContent = repo.name;
+                            repoList.appendChild(a);
+                        });
+                        if (repos.length === 0) {
+                            repoList.innerHTML = 'No repositories found.';
+                        }
+                    })
+                    .catch((err) => {
+                        repoList.innerHTML = 'Failed to load repositories.';
+                        console.error('Fetch error:', err); // Debug log
+                    });
+            });
+        </script>
     </main>
     <footer>
         <div class="footer-actions"></div>
