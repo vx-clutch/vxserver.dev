@@ -1,9 +1,15 @@
+const fallbackPrograms = ["yait", "dotfiles", "vxserver.dev"];
+
 async function getPrograms() {
-  const res = await fetch('https://api.github.com/users/vx-clutch/repos?per_page=100');
-  if (!res.ok) return ["yait", "dotfiles", "vxserver.dev"];
-  const repos = await res.json();
-  if (!Array.isArray(repos)) return ["yait", "dotfiles", "vxserver.dev"];
-  return repos.map(repo => repo.name);
+  try {
+    const res = await fetch('https://api.github.com/users/vx-clutch/repos?per_page=100');
+    if (!res.ok) return fallbackPrograms;
+    const repos = await res.json();
+    if (!Array.isArray(repos) || repos.length === 0) return fallbackPrograms;
+    return repos.map(repo => repo.name);
+  } catch (_) {
+    return fallbackPrograms;
+  }
 }
 
 function getProgramOfTheDay(arr) {
@@ -16,9 +22,11 @@ function getProgramOfTheDay(arr) {
 }
 
 async function setProgramOfTheDay() {
+  const potd = document.getElementById("potd");
+  if (!potd) return;
+
   const programs = await getPrograms();
   const programOfTheDay = getProgramOfTheDay(programs);
-  const potd = document.getElementById("potd");
   potd.textContent = programOfTheDay;
   potd.href = `https://github.com/vx-clutch/${programOfTheDay}`;
 }
@@ -31,37 +39,36 @@ async function updateRecentRelease() {
 
   recentReleaseElem.textContent = "Loading…";
 
-  // Helper to set error message
   const setError = (msg) => {
     recentReleaseElem.textContent = `Error loading recent release. ${msg}`;
   };
 
   try {
-    // Use absolute path for GitHub Pages project site
-    let res = await fetch("public/recent-release.json");
+    const res = await fetch("public/recent-release.json");
     if (!res.ok) {
       setError("No recent release data found.");
       return;
     }
 
     const data = await res.json();
-    if (data.error) {
-      setError(data.error);
+    const { name, commitDate, commitUrl, url, error } = data;
+
+    if (error) {
+      setError(error);
       return;
     }
 
-    const { name, commitDate, commitUrl, url } = data;
     if (name && commitDate && commitUrl && url) {
       const dateStr = new Date(commitDate).toLocaleString();
       recentReleaseElem.innerHTML = `
-        <a href="${url}" target="_blank">${name}</a> - 
+        <a href="${url}" target="_blank">${name}</a> – 
         <a href="${commitUrl}" target="_blank">latest commit</a> 
         (${dateStr})`;
     } else {
       setError("No recent commits found.");
     }
   } catch (e) {
-    setError(e && e.message ? e.message : "Unknown error.");
+    setError(e?.message || "Unknown error.");
   }
 }
 
