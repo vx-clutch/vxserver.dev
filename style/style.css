@@ -99,6 +99,14 @@ main.container {
   color: #e5e7ef;
 }
 
+.right-sidebar .p-box {
+  border-left: 4px solid #ffe066; /* green vertical line */
+  padding-left: 1em;
+  margin: 1em 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
 footer {
   background: #0c0d0f;
   color: #bfc4d1;
